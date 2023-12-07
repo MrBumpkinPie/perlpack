@@ -6,6 +6,10 @@ use threads ('yield', 'exit' => 'threads_only', 'stringify');
 use threads::shared;
 use Time::HiRes qw(usleep);
 use Socket qw(PF_INET SOCK_STREAM inet_aton sockaddr_in);
+IO::Socket::SSL::set_defaults(
+    SSL_verify_mode => SSL_VERIFY_NONE,
+    SSL_check_crl   => -1,
+);
 my @useragents = (
     "Mozilla/5.0 (Linux; U; Android 2.2.1; en-ca; LG-P505R Build/FRG83) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1",
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
@@ -33,7 +37,7 @@ my @useragents = (
     "Mozilla/5.0 (iPad; CPU OS 7_0_3 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11B511 Safari/9537.53",
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/600.1.17 (KHTML, like Gecko) Version/7.1 Safari/537.85.10"
 );
-my $method = "HANDSHAKE"; # Use a custom method to represent the handshake
+my $method = "GET"; 
 my $hilo;
 my @vals = ('a'..'z', 0..9);
 my $randsemilla = "";
@@ -113,5 +117,5 @@ sub layer7 {
 if ($#ARGV > 1) {
     layer7();
 } else {
-    die("(SCRIPT-HELP) Usage: perl handshakes.pl [url] [threads] [time]\n");
+    die("(SCRIPT-HELP) Usage: perl tls.pl [url] [threads] [time]\n");
 }
